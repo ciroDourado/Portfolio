@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('skill_categories', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

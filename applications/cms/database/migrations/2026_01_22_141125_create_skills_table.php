@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique();
+            $table->foreignId('skill_category_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('icon_url')->nullable();
+            $table->integer('proficiency_level')->nullable();
+            $table->boolean('is_highlight')->default(false);
             $table->timestamps();
         });
     }

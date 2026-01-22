@@ -1,0 +1,72 @@
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  cms:
+    build: ./containers/laravel
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: portfolio
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./applications/cms:/app
+    command: php artisan serve --host=0.0.0.0
+    networks:
+      - internal
+
+  api:
+    image: golang:1.22-alpine
+    working_dir: /app
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: portfolio
+      DB_USER: user
+      DB_PASSWORD: password
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./applications/api:/app
+    command: tail -f /dev/null
+    depends_on:
+      - database
+    networks:
+      - internal
+
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    environment:
+      API_URL: http://api:8080
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./applications/web:/app
+    command: tail -f /dev/null
+    networks:
+      - internal
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge

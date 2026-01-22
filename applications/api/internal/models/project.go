@@ -21,4 +21,5 @@ type Project struct {
 	StartedAt        time.Time `json:"started_at"`
 	FinishedAt       *time.Time `json:"finished_at"`
 	IsFeatured       bool      `json:"is_featured"`
+	Skills           []Skill    `gorm:"many2many:project_skill" json:"skills"`
 }

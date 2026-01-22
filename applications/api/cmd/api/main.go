@@ -1,15 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
-	"github.com/cirodourado/portfolio/applications/api/internal/repositories/project"
+	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/project"
 )
 
 func main() {
@@ -48,8 +48,5 @@ func main() {
 		Handler: r,
 	}
 
-	err := srv.ListenAndServe()
-	if err != nil && err != http.ErrServerClosed {
-	    log.Fatalf("Erro ao iniciar servidor: %v", err)
-	}
+	srv.ListenAndServe()
 }

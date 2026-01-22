@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	repositories "github.com/seu-usuario/portfolio/applications/api/internal/repositories/project"
+	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/project"
 )
 
 type ProjectHandler struct {

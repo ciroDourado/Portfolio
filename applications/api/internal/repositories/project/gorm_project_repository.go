@@ -2,7 +2,7 @@ package project
 
 import (
 	"gorm.io/gorm"
-	"github.com/seu-usuario/portfolio/applications/api/internal/models"
+	"github.com/cirodourado/portfolio/applications/api/internal/models"
 )
 
 type GormProjectRepository struct {

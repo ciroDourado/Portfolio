@@ -10,6 +10,11 @@ services:
       - database_data:/var/lib/postgresql/data
     networks:
       - internal
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d portfolio" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   cms:
     build:
@@ -17,7 +22,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     environment:
       APP_URL: http://localhost:8000
       DB_CONNECTION: pgsql
@@ -34,8 +40,9 @@ services:
       - internal
 
   api:
-    image: golang:1.22-alpine
-    working_dir: /app
+    build:
+      context: ./applications/api
+      dockerfile: Dockerfile
     environment:
       DB_HOST: database
       DB_PORT: 5432
@@ -46,9 +53,10 @@ services:
       - "8080:8080"
     volumes:
       - ./applications/api:/app
-    command: tail -f /dev/null
+      - go_cache:/go
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     networks:
       - internal
 
@@ -67,6 +75,7 @@ services:
 
 volumes:
   database_data:
+  go_cache:
 
 networks:
   internal:

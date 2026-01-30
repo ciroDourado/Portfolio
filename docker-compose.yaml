@@ -61,23 +61,25 @@ services:
       - internal
     healthcheck:
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8080/health" ]
-      interval: 10s
-      timeout: 5s
+      interval: 5s
+      timeout: 10s
       retries: 3
 
   web:
-    image: node:20-alpine
-    working_dir: /app
+    build:
+      context: ./applications/web
+      dockerfile: Dockerfile
     environment:
-      HOST: 0.0.0.0
-      PORT: 3000
-      API_URL: http://api:8080/api/v1
-      NUXT_PUBLIC_API_URL: http://localhost:8080/api/v1
+      API_INTERNAL_URL: http://api:8080/api/v1
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1
     ports:
       - "3000:3000"
     volumes:
       - ./applications/web:/app
-    command: tail -f /dev/null
+      - /app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
     networks:
       - internal
 

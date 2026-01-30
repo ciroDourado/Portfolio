@@ -1,6 +1,5 @@
 import { fetchAPI } from '@/lib/api';
 import { Project } from '@/types';
-import Image from 'next/image';
 
 export default async function Home() {
 

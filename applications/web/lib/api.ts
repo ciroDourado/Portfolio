@@ -10,7 +10,7 @@ export async function fetchAPI<T>(endpoint: string): Promise<T> {
     const url = `${baseUrl}${endpoint}`;
 
     const res = await fetch(url, {
-        next: { revalidate: 60 },
+        next: {revalidate: 60},
     });
 
     if (!res.ok) {

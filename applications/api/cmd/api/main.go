@@ -40,6 +40,7 @@ func main() {
     r.Get("/health", handlers.HealthCheck)
     r.Route("/api/v1", func(r chi.Router) {
         r.Get("/projects", projectHandler.GetAll)
+        r.Get("/projects/{slug}", projectHandler.GetBySlug)
         r.Get("/experiences", experienceHandler.GetAll)
     })
 

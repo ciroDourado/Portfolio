@@ -20,3 +20,15 @@ func (r *GormProjectRepository) GetAll() ([]models.Project, error) {
 
 	return projects, result.Error
 }
+
+func (r *GormProjectRepository) GetBySlug(slug string) (*models.Project, error) {
+	var project models.Project
+
+	result := r.DB.Preload("Skills.Category").Where("slug = ?", slug).First(&project)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &project, nil
+}

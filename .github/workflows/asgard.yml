@@ -47,8 +47,8 @@ jobs:
         run: |
           npm ci
           npm run build
-          cp -r public .next/standalone/applications/web/public
-          cp -r .next/static .next/standalone/applications/web/.next/static
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

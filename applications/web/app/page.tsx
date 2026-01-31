@@ -1,6 +1,8 @@
 import { fetchAPI } from '@/lib/api';
 import { Project } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
 
   let projects: Project[] = [];

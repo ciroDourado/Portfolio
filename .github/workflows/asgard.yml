@@ -23,7 +23,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: api-binary
+          name: api
           path: applications/api/main
 
   build-web:
@@ -47,13 +47,13 @@ jobs:
         run: |
           npm ci
           npm run build
-          cp -r public .next/standalone/public
-          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web-build
+          name: web
           path: applications/web/.next/standalone
 
   build-cms:
@@ -74,7 +74,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cms-build
+          name: cms
           path: applications/cms
 
   deploy:
@@ -93,7 +93,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           source: "artifacts"
-          target: "~/temp_deploy"
+          target: ${{ secrets.REMOTE_PATH }}
           strip_components: 1
 
       - name: Finalize Deployment
@@ -104,20 +104,15 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo systemctl stop portfolio-api
-            mv ~/temp_deploy/artifacts/api-binary/main ${{ secrets.REMOTE_PATH }}/api/main
             chmod +x ${{ secrets.REMOTE_PATH }}/api/main
             sudo systemctl start portfolio-api
             
-            rsync -a --delete ~/temp_deploy/artifacts/web-build/ ${{ secrets.REMOTE_PATH }}/web/
             cd ${{ secrets.REMOTE_PATH }}/web
             pm2 restart portfolio-web || pm2 start server.js --name portfolio-web
             
-            rsync -a --delete --exclude 'storage' ~/temp_deploy/artifacts/cms-build/ ${{ secrets.REMOTE_PATH }}/cms/
             cd ${{ secrets.REMOTE_PATH }}/cms
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
             sudo chown -R ${{ secrets.REMOTE_WEBSERVER }}:${{ secrets.REMOTE_WEBSERVER }} storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
-            
-            rm -rf ~/temp_deploy

@@ -1,5 +1,6 @@
 import { fetchAPI } from '@/lib/api';
 import { Project } from '@/types';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,18 +26,22 @@ export default async function Home() {
                     key={project.id}
                     className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden border border-gray-200 dark:border-gray-700"
                 >
-                  <div className="relative h-48 w-full bg-gray-200">
-                    <img
-                        src={project.thumbnail_url}
-                        alt={project.title}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
+                  <Link href={`/projects/${project.slug}`} className="block">
+                    <div className="relative h-48 w-full bg-gray-200">
+                      <img
+                          src={project.thumbnail_url}
+                          alt={project.title}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </Link>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                      {project.title}
-                    </h3>
+                    <Link href={`/projects/${project.slug}`}>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        {project.title}
+                      </h3>
+                    </Link>
                     <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-4">
                       {project.short_description}
                     </p>

@@ -92,7 +92,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "artifacts/*"
+          source: "artifacts"
           target: "~/temp_deploy"
           strip_components: 1
 
@@ -104,15 +104,15 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo systemctl stop portfolio-api
-            mv ~/temp_deploy/api-binary/main ${{ secrets.REMOTE_PATH }}/api/main
+            mv ~/temp_deploy/artifacts/api-binary/main ${{ secrets.REMOTE_PATH }}/api/main
             chmod +x ${{ secrets.REMOTE_PATH }}/api/main
             sudo systemctl start portfolio-api
             
-            rsync -a --delete ~/temp_deploy/web-build/ ${{ secrets.REMOTE_PATH }}/web/
+            rsync -a --delete ~/temp_deploy/artifacts/web-build/ ${{ secrets.REMOTE_PATH }}/web/
             cd ${{ secrets.REMOTE_PATH }}/web
             pm2 restart portfolio-web || pm2 start server.js --name portfolio-web
             
-            rsync -a --delete --exclude 'storage' ~/temp_deploy/cms-build/ ${{ secrets.REMOTE_PATH }}/cms/
+            rsync -a --delete --exclude 'storage' ~/temp_deploy/artifacts/cms-build/ ${{ secrets.REMOTE_PATH }}/cms/
             cd ${{ secrets.REMOTE_PATH }}/cms
             php artisan migrate --force
             php artisan config:cache

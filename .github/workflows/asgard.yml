@@ -55,6 +55,7 @@ jobs:
         with:
           name: web
           path: applications/web/.next/standalone
+          include-hidden-files: true
 
   build-cms:
     runs-on: ubuntu-latest
@@ -92,8 +93,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "artifacts"
           target: ${{ secrets.REMOTE_PATH }}
+          source: "artifacts"
           strip_components: 1
 
       - name: Finalize Deployment

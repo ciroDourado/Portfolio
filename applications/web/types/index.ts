@@ -8,8 +8,11 @@ export interface Project {
     title: string;
     slug: string;
     short_description: string;
-    thumbnail_url: string;
+    content: string;
     repository_url: string;
     live_url: string;
+    thumbnail_url: string;
     skills: Skill[];
+    started_at?: string;
+    finished_at?: string;
 }

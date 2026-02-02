@@ -84,6 +84,8 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
       - name: Copy Files (SCP)
         uses: appleboy/scp-action@v0.1.7
@@ -92,6 +94,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           target: ${{ secrets.REMOTE_PATH }}
+          source: "artifacts"
+          strip_components: 1
 
       - name: Finalize Deployment
         uses: appleboy/ssh-action@v1.0.3

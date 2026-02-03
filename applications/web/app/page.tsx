@@ -70,7 +70,7 @@ export default async function Home() {
           </div>
 
           {projects.length === 0 && (
-              <p className="text-gray-500 mt-10">Nenhum projeto encontrado ou erro na API.</p>
+              <p className="text-gray-500 mt-10">Nenhum projeto encontrado.</p>
           )}
         </div>
 

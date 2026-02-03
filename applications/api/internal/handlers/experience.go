@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"net/http"
 
-	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/experience"
+	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
 type ExperienceHandler struct {
-	Repo repositories.ExperienceRepository
+	experienceRepository repositories.ExperienceRepository
 }
 
-func NewExperienceHandler(repo repositories.ExperienceRepository) *ExperienceHandler {
-	return &ExperienceHandler{Repo: repo}
+func NewExperienceHandler(experienceRepository repositories.ExperienceRepository) *ExperienceHandler {
+	return &ExperienceHandler{experienceRepository: experienceRepository}
 }
 
-func (h *ExperienceHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	experiences, err := h.Repo.GetAll()
+func (eh *ExperienceHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	experiences, err := eh.experienceRepository.GetAll()
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

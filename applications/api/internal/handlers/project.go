@@ -5,19 +5,19 @@ import (
 	"net/http"
 
     "github.com/go-chi/chi/v5"
-	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/project"
+	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
 type ProjectHandler struct {
-	Repo repositories.ProjectRepository
+	projectRepository repositories.ProjectRepository
 }
 
-func NewProjectHandler(repo repositories.ProjectRepository) *ProjectHandler {
-	return &ProjectHandler{Repo: repo}
+func NewProjectHandler(projectRepository repositories.ProjectRepository) *ProjectHandler {
+	return &ProjectHandler{projectRepository: projectRepository}
 }
 
-func (h *ProjectHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	projects, err := h.Repo.GetAll()
+func (ph *ProjectHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	projects, err := ph.projectRepository.GetAll()
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -28,14 +28,14 @@ func (h *ProjectHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(projects)
 }
 
-func (h *ProjectHandler) GetBySlug(w http.ResponseWriter, r *http.Request) {
+func (ph *ProjectHandler) GetBySlug(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	if slug == "" {
 		http.Error(w, "Slug is required", http.StatusBadRequest)
 		return
 	}
 
-	project, err := h.Repo.GetBySlug(slug)
+	project, err := ph.projectRepository.GetBySlug(slug)
 	if err != nil {
 		http.Error(w, "Project not found", http.StatusNotFound)
 		return

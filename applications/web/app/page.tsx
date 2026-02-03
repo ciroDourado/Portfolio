@@ -131,14 +131,14 @@ export default async function Home() {
           {projects.length === 0 && (
               <p className="text-gray-500 mt-10">Nenhum projeto encontrado.</p>
           )}
-        </div>
 
-        <section className="mt-24 mb-12">
-          <h2 className="text-3xl font-bold mb-12 text-gray-900 dark:text-white">
-            Minha Jornada
-          </h2>
-          <ExperienceTimeline experiences={experiences} />
-        </section>
+          <section className="mt-24 mb-12">
+            <h2 className="text-3xl font-bold mb-12 text-gray-900 dark:text-white">
+              Minha Jornada
+            </h2>
+            <ExperienceTimeline experiences={experiences} />
+          </section>
+        </div>
       </main>
   );
 }

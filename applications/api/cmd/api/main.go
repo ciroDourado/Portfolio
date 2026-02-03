@@ -24,9 +24,9 @@ func main() {
 		log.Fatalf("Erro ao conectar no banco: %v", err)
 	}
 
-    projectRepo := project.NewGormProjectRepository(db)
+    projectRepo := projects.NewGormProjectRepository(db)
     projectHandler := handlers.NewProjectHandler(projectRepo)
-    experienceRepo := experience.NewGormExperienceRepository(db)
+    experienceRepo := experiences.NewGormExperienceRepository(db)
 	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 
 	r := chi.NewRouter()

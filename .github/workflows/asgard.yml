@@ -109,11 +109,11 @@ jobs:
             sudo systemctl start portfolio-api
             
             cd ${{ secrets.REMOTE_PATH }}/web
-            /usr/local/bin/pm2 restart portfolio-web
+            /usr/local/bin/pm2 restart PortfolioWeb
             
             cd ${{ secrets.REMOTE_PATH }}/cms
             /usr/bin/php artisan migrate --force
             /usr/bin/php artisan optimize:clear
             /usr/bin/php artisan optimize
-            sudo chown -R caddy:caddy storage bootstrap/cache
+            sudo chown -R ${{ secrets.REMOTE_WEBSERVER }}:${{ secrets.SSH_USERNAME }} storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache

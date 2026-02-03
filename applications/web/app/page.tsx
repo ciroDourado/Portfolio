@@ -21,7 +21,7 @@ export default async function Home() {
     console.error("Falha ao carregar experiências:", error);
   }
 
-  let profile: Profile;
+  let profile: Profile = {};
   try {
     profile = await fetchAPI<Profile>('/profile');
   } catch (error) {

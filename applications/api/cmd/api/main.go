@@ -9,7 +9,7 @@ import (
 	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
-	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/project"
+	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
 func main() {
@@ -23,9 +23,10 @@ func main() {
 		log.Fatalf("Erro ao conectar no banco: %v", err)
 	}
 
-    projectRepo := repositories.NewGormProjectRepository(db)
+    projectRepo := repositories.project.NewGormProjectRepository(db)
     projectHandler := handlers.NewProjectHandler(projectRepo)
-	experienceHandler := handlers.NewExperienceHandler(db)
+    experienceRepo := repositories.experience.NewGormExperienceRepository(db)
+	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)

@@ -109,6 +109,11 @@ jobs:
             sudo systemctl start portfolio-api
             
             cd ${{ secrets.REMOTE_PATH }}/web
+            /usr/local/bin/pm2 restart portfolio-web
             
             cd ${{ secrets.REMOTE_PATH }}/cms
-            sudo chmod -R 775 bootstrap/cache
+            /usr/bin/php artisan migrate --force
+            /usr/bin/php artisan optimize:clear
+            /usr/bin/php artisan optimize
+            sudo chown -R caddy:caddy storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache

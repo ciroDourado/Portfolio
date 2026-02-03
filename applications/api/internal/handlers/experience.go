@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/cirodourado/portfolio/applications/api/internal/models"
 	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/experience"
 )
 

@@ -57,9 +57,10 @@ export default async function Home() {
               <p className="text-xl md:text-2xl text-blue-600 font-medium mb-6">
                 {profile.headline}
               </p>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg mb-8 leading-relaxed">
-                {profile.bio}
-              </p>
+              <p
+                  className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg mb-8 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: profile.bio }}
+              />
 
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 {profile.cv_url && (

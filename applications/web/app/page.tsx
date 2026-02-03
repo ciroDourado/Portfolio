@@ -21,16 +21,7 @@ export default async function Home() {
     console.error("Falha ao carregar experiências:", error);
   }
 
-  let profile: Profile = {
-    id: "",
-    name: "",
-    bio: "",
-    headline: "",
-    avatar_url: "",
-    cv_url: "",
-    github_url: "",
-    linkedin_url: ""
-  };
+  let profile: Profile|null = null;
   try {
     profile = await fetchAPI<Profile>('/profile');
   } catch (error) {
@@ -38,8 +29,8 @@ export default async function Home() {
   }
 
   return (
-      <main className="min-h-screen p-8 md:p-24 bg-gray-50 dark:bg-gray-900">
-        <section className="bg-white dark:bg-gray-800 py-20 border-b border-gray-200 dark:border-gray-700">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {profile && (<section className="bg-white dark:bg-gray-800 py-20">
           <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
 
             <div className="relative w-48 h-48 md:w-64 md:h-64 shrink-0">
@@ -57,33 +48,35 @@ export default async function Home() {
               <p className="text-xl md:text-2xl text-blue-600 font-medium mb-6">
                 {profile.headline}
               </p>
-              <p
-                  className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg mb-8 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: profile.bio }}
-              />
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg mb-8 leading-relaxed whitespace-pre-line">
+                {profile.bio}
+              </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 {profile.cv_url && (
-                    <a href={profile.cv_url} target="_blank" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition">
+                    <a href={profile.cv_url} target="_blank"
+                       className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition">
                       Download CV
                     </a>
                 )}
                 {profile.github_url && (
-                    <a href={profile.github_url} target="_blank" className="px-6 py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-700 transition">
+                    <a href={profile.github_url} target="_blank"
+                       className="px-6 py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-700 transition">
                       GitHub
                     </a>
                 )}
                 {profile.linkedin_url && (
-                    <a href={profile.linkedin_url} target="_blank" className="px-6 py-3 bg-blue-800 text-white rounded-lg font-bold hover:bg-blue-900 transition">
+                    <a href={profile.linkedin_url} target="_blank"
+                       className="px-6 py-3 bg-blue-800 text-white rounded-lg font-bold hover:bg-blue-900 transition">
                       LinkedIn
                     </a>
                 )}
               </div>
             </div>
           </div>
-        </section>
+        </section>)}
 
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
           <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">
             Meus Projetos <span className="text-blue-500">(Next.js + Go)</span>
           </h1>

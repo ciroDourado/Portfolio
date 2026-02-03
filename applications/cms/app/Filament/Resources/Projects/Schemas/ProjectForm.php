@@ -14,9 +14,6 @@ class ProjectForm
     {
         return $schema
             ->components([
-                TextInput::make('uuid')
-                    ->label('UUID')
-                    ->required(),
                 TextInput::make('title')
                     ->required(),
                 TextInput::make('slug')

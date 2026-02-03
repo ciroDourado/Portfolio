@@ -4,26 +4,23 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"gorm.io/gorm"
 	"github.com/cirodourado/portfolio/applications/api/internal/models"
+	repositories "github.com/cirodourado/portfolio/applications/api/internal/repositories/experience"
 )
 
 type ExperienceHandler struct {
-	DB *gorm.DB
+	Repo repositories.ExperienceRepository
 }
 
-func NewExperienceHandler(db *gorm.DB) *ExperienceHandler {
-	return &ExperienceHandler{DB: db}
+func NewExperienceHandler(repo repositories.ExperienceRepository) *ExperienceHandler {
+	return &ExperienceHandler{Repo: repo}
 }
 
-// GetAll (GET /api/v1/experiences)
 func (h *ExperienceHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	var experiences []models.Experience
+	experiences, err := h.Repo.GetAll()
 
-	result := h.DB.Order("start_date desc").Find(&experiences)
-
-	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

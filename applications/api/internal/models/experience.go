@@ -7,7 +7,7 @@ type Experience struct {
 	UUID        string     `json:"id"`
 	CompanyName string     `json:"company_name"`
 	Role        string     `json:"role"`
-	Description string     `json:"description"`
+	Description *string    `json:"description"`
 	StartDate   time.Time  `json:"start_date"`
 	EndDate     *time.Time `json:"end_date"`
 	IsCurrent   bool       `json:"is_current"`

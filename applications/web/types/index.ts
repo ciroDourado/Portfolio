@@ -25,3 +25,14 @@ export interface Experience {
     start_date: string;
     end_date: string | null;
 }
+
+export interface Profile {
+    id: string;
+    name: string;
+    headline: string;
+    bio: string;
+    avatar_url: string;
+    github_url: string;
+    linkedin_url: string;
+    cv_url: string;
+}

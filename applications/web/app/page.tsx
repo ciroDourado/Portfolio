@@ -1,5 +1,5 @@
 import { fetchAPI } from '@/lib/api';
-import {Experience, Project} from '@/types';
+import {Experience, Profile, Project} from '@/types';
 import Link from 'next/link';
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
 
@@ -21,8 +21,58 @@ export default async function Home() {
     console.error("Falha ao carregar experiências:", error);
   }
 
+  let profile: Profile;
+  try {
+    profile = await fetchAPI<Profile>('/profile');
+  } catch (error) {
+    console.error("Falha ao carregar perfil:", error);
+  }
+
   return (
       <main className="min-h-screen p-8 md:p-24 bg-gray-50 dark:bg-gray-900">
+        <section className="bg-white dark:bg-gray-800 py-20 border-b border-gray-200 dark:border-gray-700">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+
+            <div className="relative w-48 h-48 md:w-64 md:h-64 shrink-0">
+              {profile.avatar_url && (<img
+                  src={profile.avatar_url}
+                  alt={profile.name}
+                  className="rounded-full object-cover w-full h-full shadow-2xl border-4 border-white dark:border-gray-700"
+              />)}
+            </div>
+
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-4">
+                {profile.name}
+              </h1>
+              <p className="text-xl md:text-2xl text-blue-600 font-medium mb-6">
+                {profile.headline}
+              </p>
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl text-lg mb-8 leading-relaxed">
+                {profile.bio}
+              </p>
+
+              <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                {profile.cv_url && (
+                    <a href={profile.cv_url} target="_blank" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition">
+                      Download CV
+                    </a>
+                )}
+                {profile.github_url && (
+                    <a href={profile.github_url} target="_blank" className="px-6 py-3 bg-gray-900 text-white rounded-lg font-bold hover:bg-gray-700 transition">
+                      GitHub
+                    </a>
+                )}
+                {profile.linkedin_url && (
+                    <a href={profile.linkedin_url} target="_blank" className="px-6 py-3 bg-blue-800 text-white rounded-lg font-bold hover:bg-blue-900 transition">
+                      LinkedIn
+                    </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">
             Meus Projetos <span className="text-blue-500">(Next.js + Go)</span>

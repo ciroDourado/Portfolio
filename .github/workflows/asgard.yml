@@ -94,6 +94,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            cd ${{ secrets.REMOTE_PATH }}/cms
             sudo chown -R ${{ secrets.SSH_USERNAME }}:${{ secrets.SSH_USERNAME }} storage bootstrap/cache
 
       - name: Copy Files (SCP)

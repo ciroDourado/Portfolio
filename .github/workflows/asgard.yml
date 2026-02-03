@@ -87,6 +87,15 @@ jobs:
         with:
           path: artifacts
 
+      - name: Adjust Permissions
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo chown -R ${{ secrets.SSH_USERNAME }}:${{ secrets.SSH_USERNAME }} storage bootstrap/cache
+
       - name: Copy Files (SCP)
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -115,5 +124,5 @@ jobs:
             /usr/bin/php artisan migrate --force
             /usr/bin/php artisan optimize:clear
             /usr/bin/php artisan optimize
-            sudo chown -R ${{ secrets.REMOTE_WEBSERVER }}:${{ secrets.SSH_USERNAME }} storage bootstrap/cache
+            sudo chown -R ${{ secrets.REMOTE_WEBSERVER }}:${{ secrets.REMOTE_WEBSERVER }} storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache

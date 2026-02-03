@@ -1,6 +1,7 @@
 import { fetchAPI } from '@/lib/api';
-import { Project } from '@/types';
+import {Experience, Project} from '@/types';
 import Link from 'next/link';
+import ExperienceTimeline from "@/app/components/ExperienceTimeline";
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,13 @@ export default async function Home() {
     projects = await fetchAPI<Project[]>('/projects');
   } catch (error) {
     console.error("Falha ao carregar projetos:", error);
+  }
+
+  let experiences: Experience[] = [];
+  try {
+    experiences = await fetchAPI<Experience[]>('/experiences');
+  } catch (error) {
+    console.error("Falha ao carregar experiências:", error);
   }
 
   return (
@@ -65,6 +73,13 @@ export default async function Home() {
               <p className="text-gray-500 mt-10">Nenhum projeto encontrado ou erro na API.</p>
           )}
         </div>
+
+        <section className="mt-24 mb-12">
+          <h2 className="text-3xl font-bold mb-12 text-gray-900 dark:text-white">
+            Minha Jornada
+          </h2>
+          <ExperienceTimeline experiences={experiences} />
+        </section>
       </main>
   );
 }

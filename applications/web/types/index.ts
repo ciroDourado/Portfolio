@@ -16,3 +16,12 @@ export interface Project {
     started_at?: string;
     finished_at?: string;
 }
+
+export interface Experience {
+    id: string;
+    company_name: string;
+    role: string;
+    description: string;
+    start_date: string;
+    end_date: string | null;
+}

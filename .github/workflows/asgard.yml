@@ -40,13 +40,13 @@ jobs:
 
       - name: Build Binary
         working-directory: ./applications/api
-        run: GOOS=linux GOARCH=amd64 go build -o worker ./cmd/worker
+        run: GOOS=linux GOARCH=amd64 go build -o main ./cmd/worker
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: api
-          path: applications/api/worker
+          name: worker
+          path: applications/api/main
 
   build-web:
     runs-on: ubuntu-latest
@@ -137,9 +137,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ${{ secrets.REMOTE_PATH }}/api
-            chmod +x main worker
-            sudo systemctl stop portfolio-api portfolio-worker
-            sudo systemctl start portfolio-api portfolio-worker
+            chmod +x main
+            sudo systemctl stop portfolio-api
+            sudo systemctl start portfolio-api
+            
+            cd ${{ secrets.REMOTE_PATH }}/worker
+            chmod +x main
+            sudo systemctl stop portfolio-worker
+            sudo systemctl start portfolio-worker
             
             cd ${{ secrets.REMOTE_PATH }}/web
             /usr/local/bin/pm2 restart PortfolioWeb

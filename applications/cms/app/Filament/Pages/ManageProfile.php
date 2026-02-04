@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Profile;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -46,8 +47,10 @@ class ManageProfile extends Page
                         ->required(),
                     RichEditor::make('bio')
                         ->columnSpanFull(),
-                    TextInput::make('avatar_url')
-                        ->url(),
+                    FileUpload::make('avatar_url')
+                        ->image()
+                        ->directory('profiles')
+                        ->visibility('public'),
                     TextInput::make('github_url')
                         ->url(),
                     TextInput::make('linkedin_url')

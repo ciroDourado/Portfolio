@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Projects\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
@@ -26,8 +27,10 @@ class ProjectForm
                     ->url(),
                 TextInput::make('live_url')
                     ->url(),
-                TextInput::make('thumbnail_url')
-                    ->url(),
+                FileUpload::make('thumbnail_url')
+                    ->image()
+                    ->directory('projects')
+                    ->visibility('public'),
                 DatePicker::make('started_at'),
                 DatePicker::make('finished_at'),
                 Toggle::make('is_featured')

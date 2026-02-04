@@ -7,11 +7,12 @@ import (
     "log"
 
 	"github.com/hibiken/asynq"
+	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/worker"
 )
 
 func main() {
-    cfg, err := Load()
+    cfg, err := config.LoadWorkerConfig()
 	if err != nil {
 		log.Fatalf("Error loading configs: %v", err)
 	}

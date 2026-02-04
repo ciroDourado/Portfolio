@@ -8,13 +8,14 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/hibiken/asynq"
+	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
 func main() {
-    cfg, err := Load()
+    cfg, err := config.LoadApiConfig()
 	if err != nil {
 		log.Fatalf("Erro ao carregar configurações: %v", err)
 	}

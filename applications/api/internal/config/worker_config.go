@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -6,20 +6,20 @@ import (
 	"github.com/caarlos0/env/v11"
 )
 
-type Config struct {
+type WorkerConfig struct {
 	RedisHost  string `env:"REDIS_HOST,required"`
 	RedisPort  int    `env:"REDIS_PORT" envDefault:"6379"`
 }
 
-func (c *Config) GetRedisURL() string {
+func (wc *WorkerConfig) GetRedisURL() string {
 	return fmt.Sprintf(
 		"%s:%d",
-		c.RedisHost, c.RedisPort,
+		wc.RedisHost, wc.RedisPort,
 	)
 }
 
-func Load() (*Config, error) {
-	var cfg Config
+func LoadWorkerConfig() (*WorkerConfig, error) {
+	var cfg WorkerConfig
 
 	if err := env.Parse(&cfg); err != nil {
 		return nil, err

@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
@@ -26,8 +25,8 @@ func (ph *ProfileHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	profile.AvatarURL = ph.storageURL.JoinPath(profile.AvatarURL)
-	profile.CVURL = ph.storageURL.JoinPath(profile.CVURL)
+	profile.AvatarURL = ph.storageURL.JoinPath(profile.AvatarURL).String()
+	profile.CVURL = ph.storageURL.JoinPath(profile.CVURL).String()
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(profile)

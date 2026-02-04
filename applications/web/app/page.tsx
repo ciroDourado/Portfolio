@@ -5,6 +5,10 @@ import ExperienceTimeline from "@/app/components/ExperienceTimeline";
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'Portfolio | Ciro Oliveira',
+};
+
 export default async function Home() {
 
   let projects: Project[] = [];

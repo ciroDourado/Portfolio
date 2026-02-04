@@ -1,10 +1,4 @@
 import Link from 'next/link';
-import {
-    FaReact, FaDocker, FaAws, FaLinux, FaDiscord
-} from 'react-icons/fa';
-import {
-    SiGo, SiLaravel, SiPostgresql, SiRedis, SiTailwindcss, SiTypescript, SiNginx
-} from 'react-icons/si';
 
 export const metadata = {
     title: 'Arquitetura do Sistema | Ciro Oliveira',
@@ -39,7 +33,7 @@ export default function ArchitecturePage() {
                         <img
                             src="/architecture-diagram.svg"
                             alt="Diagrama de Arquitetura do Sistema"
-                            className="w-full h-auto dark:opacity-90"
+                            className="w-full h-auto bg-white p-4 rounded-lg"
                         />
                     </div>
                     <p className="mt-4 text-gray-500 text-sm text-center">

@@ -25,8 +25,12 @@ func (ph *ProfileHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	profile.AvatarURL = ph.storageURL.JoinPath(profile.AvatarURL).String()
-	profile.CVURL = ph.storageURL.JoinPath(profile.CVURL).String()
+    if profile.AvatarURL != nil {
+	    profile.AvatarURL = ph.storageURL.JoinPath(*profile.AvatarURL).String()
+    }
+    if profile.CVURL != nil {
+	    profile.CVURL = ph.storageURL.JoinPath(*profile.CVURL).String()
+    }
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(profile)

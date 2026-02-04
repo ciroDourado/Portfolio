@@ -55,8 +55,10 @@ class ManageProfile extends Page
                         ->url(),
                     TextInput::make('linkedin_url')
                         ->url(),
-                    TextInput::make('cv_url')
-                        ->url(),
+                    FileUpload::make('cv_url')
+                        ->image()
+                        ->directory('resumes')
+                        ->visibility('public'),
                 ])
                     ->livewireSubmitHandler('save')
                     ->footer([

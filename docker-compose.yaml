@@ -15,6 +15,20 @@ services:
       timeout: 5s
       retries: 5
 
+  broker:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
   cms:
     build:
       context: ./applications/cms
@@ -48,6 +62,8 @@ services:
       DB_NAME: portfolio
       DB_USER: user
       DB_PASSWORD: password
+      REDIS_HOST: broker
+      REDIS_PORT: 6379
       STORAGE_URL: http://localhost:8000/storage
     ports:
       - "8080:8080"
@@ -57,6 +73,25 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      broker:
+        condition: service_healthy
+    networks:
+      - internal
+
+  worker:
+    build:
+      context: ./applications/api
+      dockerfile: Dockerfile
+    environment:
+      REDIS_HOST: broker
+      REDIS_PORT: 6379
+    volumes:
+      - ./applications/api:/app
+      - go_cache:/go
+    depends_on:
+      broker:
+        condition: service_healthy
+    command: air -c .air.worker.toml
     networks:
       - internal
 

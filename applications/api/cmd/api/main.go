@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/hibiken/asynq"
 	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
@@ -24,12 +25,17 @@ func main() {
 		log.Fatalf("Erro ao conectar no banco: %v", err)
 	}
 
+    redisOpt := asynq.RedisClientOpt{Addr: cfg.GetRedisURL()}
+    queueClient := asynq.NewClient(redisOpt)
+    defer queueClient.Close()
+
     projectRepo := repositories.NewGormProjectRepository(db)
     projectHandler := handlers.NewProjectHandler(projectRepo)
     experienceRepo := repositories.NewGormExperienceRepository(db)
 	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 	profileRepo := repositories.NewGormProfileRepository(db)
 	profileHandler := handlers.NewProfileHandler(profileRepo, cfg.StorageURL)
+	contactHandler := handlers.NewContactHandler(queueClient)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -47,6 +53,7 @@ func main() {
         r.Get("/projects/{slug}", projectHandler.GetBySlug)
         r.Get("/experiences", experienceHandler.GetAll)
         r.Get("/profile", profileHandler.GetProfile)
+        r.Post("/contact", contactHandler.HandleSubmit)
     })
 
     srv := &http.Server{

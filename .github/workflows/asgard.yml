@@ -26,6 +26,28 @@ jobs:
           name: api
           path: applications/api/main
 
+  build-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.0'
+          cache-dependency-path: applications/api/go.sum
+
+      - name: Build Binary
+        working-directory: ./applications/api
+        run: GOOS=linux GOARCH=amd64 go build -o worker ./cmd/worker
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: worker
+          path: applications/api/worker
+
   build-web:
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +101,7 @@ jobs:
           path: applications/cms
 
   deploy:
-    needs: [build-api, build-web, build-cms]
+    needs: [build-api, build-worker, build-web, build-cms]
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -114,9 +136,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo systemctl stop portfolio-api
-            chmod +x ${{ secrets.REMOTE_PATH }}/api/main
-            sudo systemctl start portfolio-api
+            sudo systemctl stop portfolio-api portfolio-worker
+            chmod +x ${{ secrets.REMOTE_PATH }}/api/{main, worker}
+            sudo systemctl start portfolio-api portfolio-worker
             
             cd ${{ secrets.REMOTE_PATH }}/web
             /usr/local/bin/pm2 restart PortfolioWeb

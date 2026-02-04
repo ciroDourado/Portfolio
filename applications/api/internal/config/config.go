@@ -14,6 +14,8 @@ type Config struct {
 	DBPassword string   `env:"DB_PASSWORD,required"`
 	DBName     string   `env:"DB_NAME,required"`
 	DBPort     int      `env:"DB_PORT" envDefault:"5432"`
+	RedisHost  string   `env:"REDIS_HOST,required"`
+	RedisPort  int      `env:"REDIS_PORT" envDefault:"6379"`
 	StorageURL *url.URL `env:"STORAGE_URL,required"`
 }
 
@@ -21,6 +23,13 @@ func (c *Config) GetDatabaseURL() string {
 	return fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=UTC",
 		c.DBHost, c.DBUser, c.DBPassword, c.DBName, c.DBPort,
+	)
+}
+
+func (c *Config) GetRedisURL() string {
+	return fmt.Sprintf(
+		"%s:%d",
+		c.RedisHost, c.RedisPort,
 	)
 }
 

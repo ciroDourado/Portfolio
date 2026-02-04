@@ -56,7 +56,6 @@ class ManageProfile extends Page
                     TextInput::make('linkedin_url')
                         ->url(),
                     FileUpload::make('cv_url')
-                        ->image()
                         ->directory('resumes')
                         ->visibility('public'),
                 ])

@@ -3,16 +3,19 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
 
+	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
 type ProfileHandler struct {
     profileRepository repositories.ProfileRepository
+    storageURL        *url.URL
 }
 
-func NewProfileHandler(profileRepository repositories.ProfileRepository) *ProfileHandler {
-	return &ProfileHandler{profileRepository: profileRepository}
+func NewProfileHandler(profileRepository repositories.ProfileRepository, storageURL *url.URL) *ProfileHandler {
+	return &ProfileHandler{profileRepository: profileRepository, storageURL: storageURL}
 }
 
 func (ph *ProfileHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +25,9 @@ func (ph *ProfileHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	profile.AvatarURL = ph.storageURL.JoinPath(profile.AvatarURL)
+	profile.CVURL = ph.storageURL.JoinPath(profile.CVURL)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(profile)

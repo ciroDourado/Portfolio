@@ -13,5 +13,6 @@ fi
 
 php artisan optimize
 php artisan migrate --force
+php artisan storage:link --force
 
 exec "$@"

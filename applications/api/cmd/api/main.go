@@ -18,7 +18,7 @@ func main() {
 		log.Fatalf("Erro ao carregar configurações: %v", err)
 	}
 
-	db, err := database.NewConnection(cfg.DatabaseURL)
+	db, err := database.NewConnection(cfg.GetDatabaseURL())
 	if err != nil {
 		log.Fatalf("Erro ao conectar no banco: %v", err)
 	}
@@ -28,7 +28,7 @@ func main() {
     experienceRepo := repositories.NewGormExperienceRepository(db)
 	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 	profileRepo := repositories.NewGormProfileRepository(db)
-	profileHandler := handlers.NewProfileHandler(profileRepo)
+	profileHandler := handlers.NewProfileHandler(profileRepo, cfg.StorageURL)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -49,7 +49,7 @@ func main() {
     })
 
     srv := &http.Server{
-		Addr:    ":" + cfg.AppPort,
+		Addr:    fmt.Sprintf(":%d", cfg.AppPort),
 		Handler: r,
 	}
 

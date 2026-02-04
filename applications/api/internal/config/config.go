@@ -2,36 +2,34 @@ package config
 
 import (
 	"fmt"
-	"os"
+	"net/url"
+
+	"github.com/caarlos0/env/v11"
 )
 
 type Config struct {
-	AppPort      string
-	DatabaseURL  string
+	AppPort    int     `env:"APP_PORT" envDefault:"8080"`
+	DBHost     string  `env:"DB_HOST,required"`
+	DBUser     string  `env:"DB_USER,required"`
+	DBPassword string  `env:"DB_PASSWORD,required"`
+	DBName     string  `env:"DB_NAME,required"`
+	DBPort     int     `env:"DB_PORT" envDefault:"5432"`
+	StorageURL url.URL `env:"STORAGE_URL,required"`
+}
+
+func (c *Config) GetDatabaseURL() string {
+	return fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=UTC",
+		c.DBHost, c.DBUser, c.DBPassword, c.DBName, c.DBPort,
+	)
 }
 
 func Load() (*Config, error) {
-	cfg := &Config{
-		AppPort: getEnv("APP_PORT", "8080"),
+	var cfg Config
+
+	if err := env.Parse(&cfg); err != nil {
+		return nil, fmt.Errorf("Falha ao carregar configurações: %w", err)
 	}
 
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=UTC",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PORT"),
-	)
-	cfg.DatabaseURL = dsn
-
-	return cfg, nil
-}
-
-// Helper para ler env com fallback
-func getEnv(key, fallback string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return fallback
+	return &cfg, nil
 }

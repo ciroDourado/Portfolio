@@ -136,8 +136,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            cd ${{ secrets.REMOTE_PATH }}/api
+            chmod +x main worker
             sudo systemctl stop portfolio-api portfolio-worker
-            chmod +x ${{ secrets.REMOTE_PATH }}/api/{main, worker}
             sudo systemctl start portfolio-api portfolio-worker
             
             cd ${{ secrets.REMOTE_PATH }}/web

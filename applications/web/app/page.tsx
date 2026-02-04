@@ -140,7 +140,7 @@ export default async function Home() {
         </div>
 
         <footer className="py-8 text-center text-gray-500 text-sm">
-          <p>© 2024 Ciro Oliveira. Todos os direitos reservados.</p>
+          <p>© 2026 Ciro Oliveira. Todos os direitos reservados.</p>
           <p className="mt-2">
             Curioso sobre a stack? <Link href="/architecture" className="text-blue-600 hover:underline">Veja como este site foi feito.</Link>
           </p>

@@ -75,4 +75,4 @@ Certifique-se de ter o **Docker** e o **Docker Compose** instalados em sua máqu
 ```
 
 ---
-Desenvolvido por **Ciro Oliveira** - [LinkedIn](https://www.linkedin.com/in/ciro-oliveira/)
+Desenvolvido por **Ciro Oliveira** - [LinkedIn](https://www.linkedin.com/in/cirodourado/)

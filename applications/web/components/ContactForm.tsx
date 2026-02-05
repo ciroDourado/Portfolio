@@ -15,6 +15,8 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
+export const dynamic = 'force-dynamic';
+
 export default function ContactForm() {
     const [isLoading, setIsLoading] = useState(false);
 

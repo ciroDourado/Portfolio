@@ -3,7 +3,6 @@ package middlewares
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/ulule/limiter/v3"
 	"github.com/ulule/limiter/v3/drivers/middleware/stdlib"

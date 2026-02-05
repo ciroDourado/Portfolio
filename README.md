@@ -67,11 +67,11 @@ Certifique-se de ter o **Docker** e o **Docker Compose** instalados em sua máqu
 ```text
 .
 ├── applications/
-│   ├── api/          # Backend principal em Go
-│   ├── cms/          # Painel administrativo em Laravel/Filament
-│   └── web/          # Frontend em Next.js
+│   ├── api/             # Backend principal em Go
+│   ├── cms/             # Painel administrativo em Laravel/Filament
+│   └── web/             # Frontend em Next.js
 ├── docker-compose.yaml  # Orquestração dos serviços
-└── README.md         # Documentação do projeto
+└── README.md            # Documentação do projeto
 ```
 
 ---

@@ -10,10 +10,11 @@ import (
 
 type ProjectHandler struct {
 	projectRepository repositories.ProjectRepository
+    storageURL        *url.URL
 }
 
-func NewProjectHandler(projectRepository repositories.ProjectRepository) *ProjectHandler {
-	return &ProjectHandler{projectRepository: projectRepository}
+func NewProjectHandler(projectRepository repositories.ProjectRepository, storageURL *url.URL) *ProjectHandler {
+	return &ProjectHandler{projectRepository: projectRepository, storageURL: storageURL}
 }
 
 func (ph *ProjectHandler) GetAll(w http.ResponseWriter, r *http.Request) {
@@ -23,6 +24,13 @@ func (ph *ProjectHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+    for i := range projects {
+        if projects[i].ThumbnailURL != nil {
+            thumbnailURL := ph.storageURL.JoinPath(*projects[i].ThumbnailURL).String()
+            projects[i].ThumbnailURL = &thumbnailURL
+        }
+    }
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(projects)
@@ -40,6 +48,11 @@ func (ph *ProjectHandler) GetBySlug(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Project not found", http.StatusNotFound)
 		return
 	}
+
+    if project.ThumbnailURL != nil {
+	    thumbnailURL := ph.storageURL.JoinPath(*project.ThumbnailURL).String()
+	    project.ThumbnailURL = &thumbnailURL
+    }
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(project)

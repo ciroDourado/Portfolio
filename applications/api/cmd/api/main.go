@@ -41,7 +41,7 @@ func main() {
     defer asynqClient.Close()
 
     projectRepo := repositories.NewGormProjectRepository(db)
-    projectHandler := handlers.NewProjectHandler(projectRepo)
+    projectHandler := handlers.NewProjectHandler(projectRepo, cfg.StorageURL)
     experienceRepo := repositories.NewGormExperienceRepository(db)
 	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 	profileRepo := repositories.NewGormProfileRepository(db)

@@ -161,7 +161,7 @@ export default async function Home() {
                     </span>
                     <div>
                       <p className="text-sm text-gray-500">Email</p>
-                      <p className="font-medium">seu.email@exemplo.com</p>
+                      <p className="font-medium">ciro.brz@gmail.com</p>
                     </div>
                   </div>
                 </div>

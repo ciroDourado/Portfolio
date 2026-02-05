@@ -2,6 +2,7 @@ import { fetchAPI } from '@/lib/api';
 import {Experience, Profile, Project} from '@/types';
 import Link from 'next/link';
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
+import ContactForm from '@/components/ContactForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -138,6 +139,39 @@ export default async function Home() {
             <ExperienceTimeline experiences={experiences} />
           </section>
         </div>
+
+        <section className="py-20 bg-gray-50 dark:bg-gray-900" id="contact">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                  Interessado no meu trabalho?
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                  Estou sempre aberto a novas oportunidades e desafios.
+                  Se você tem uma ideia de projeto ou quer discutir sobre tecnologia,
+                  minha caixa de entrada está aberta.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-700 dark:text-gray-300">
+                    <span className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600">
+                        📧
+                    </span>
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="font-medium">seu.email@exemplo.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ContactForm />
+
+            </div>
+          </div>
+        </section>
 
         <footer className="py-8 text-center text-gray-500 text-sm">
           <p>© 2026 Ciro Oliveira. Todos os direitos reservados.</p>

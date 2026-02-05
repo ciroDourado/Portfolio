@@ -49,6 +49,12 @@ func main() {
             next.ServeHTTP(w, r)
         })
     })
+    r.Use(cors.Handler(cors.Options{
+        AllowedOrigins:   cfg.AllowedOrigins,
+        AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+        AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+        AllowCredentials: true,
+    }))
 
     r.Get("/health", handlers.HealthCheck)
     r.Route("/v1", func(r chi.Router) {

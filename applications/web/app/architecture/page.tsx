@@ -97,7 +97,7 @@ export default function ArchitecturePage() {
 
                 <section className="text-center py-10">
                     <Link
-                        href="https://github.com/cirodourado/portfolio"
+                        href="https://github.com/ciroDourado/Portfolio"
                         target="_blank"
                         className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-full font-bold hover:bg-gray-800 transition shadow-lg"
                     >

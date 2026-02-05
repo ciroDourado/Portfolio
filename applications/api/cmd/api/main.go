@@ -12,7 +12,7 @@ import (
 	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
-	"github.com/seu-usuario/portfolio/applications/api/internal/middlewares"
+	"github.com/cirodourado/portfolio/applications/api/internal/middlewares"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 

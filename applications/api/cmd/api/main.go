@@ -12,6 +12,7 @@ import (
 	"github.com/cirodourado/portfolio/applications/api/internal/config"
 	"github.com/cirodourado/portfolio/applications/api/internal/database"
 	"github.com/cirodourado/portfolio/applications/api/internal/handlers"
+	"github.com/seu-usuario/portfolio/applications/api/internal/middlewares"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"
 )
 
@@ -26,12 +27,16 @@ func main() {
 		log.Fatalf("Erro ao conectar no banco: %v", err)
 	}
 
-    queueClient := asynq.NewClient(
+    redisClient := redis.NewClient(&redis.Options{
+        Addr: cfg.GetRedisURL(),
+    })
+
+    asynqClient := asynq.NewClient(
         asynq.RedisClientOpt{
             Addr: cfg.GetRedisURL(),
         },
     )
-    defer queueClient.Close()
+    defer asynqClient.Close()
 
     projectRepo := repositories.NewGormProjectRepository(db)
     projectHandler := handlers.NewProjectHandler(projectRepo)
@@ -39,9 +44,10 @@ func main() {
 	experienceHandler := handlers.NewExperienceHandler(experienceRepo)
 	profileRepo := repositories.NewGormProfileRepository(db)
 	profileHandler := handlers.NewProfileHandler(profileRepo, cfg.StorageURL)
-	contactHandler := handlers.NewContactHandler(queueClient)
+	contactHandler := handlers.NewContactHandler(asynqClient)
 
 	r := chi.NewRouter()
+
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(func(next http.Handler) http.Handler {
@@ -56,14 +62,17 @@ func main() {
         AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
         AllowCredentials: true,
     }))
-
     r.Get("/health", handlers.HealthCheck)
     r.Route("/v1", func(r chi.Router) {
         r.Get("/projects", projectHandler.GetAll)
         r.Get("/projects/{slug}", projectHandler.GetBySlug)
         r.Get("/experiences", experienceHandler.GetAll)
         r.Get("/profile", profileHandler.GetProfile)
-        r.Post("/contact", contactHandler.HandleSubmit)
+
+        r.Group(func(r chi.Router) {
+            r.Use(middlewares.NewRateLimiter(redisClient, "3-H"))
+            r.Post("/contact", contactHandler.HandleSubmit)
+        })
     })
 
     srv := &http.Server{

@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
 
     "github.com/go-chi/chi/v5"
 	"github.com/cirodourado/portfolio/applications/api/internal/repositories"

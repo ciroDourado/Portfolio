@@ -1,5 +1,5 @@
 import { fetchAPI } from '@/lib/api';
-import {Experience, Profile, Project, SkillCategory} from '@/types';
+import {Experience, Profile, Project, Skill, SkillCategory} from '@/types';
 import Link from 'next/link';
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
 import SkillsSection from "@/app/components/SkillsSection";
@@ -43,9 +43,10 @@ export default async function Home() {
 
   return (
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {profile && (<section className="bg-white dark:bg-gray-800 py-20">
-          <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
 
+        {/* SEÇÃO DE PERFIL */}
+        {profile && (<section className="bg-white dark:bg-gray-800 py-20 border-b border-gray-100 dark:border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
             <div className="relative w-48 h-48 md:w-64 md:h-64 shrink-0">
               {profile.avatar_url && (<img
                   src={profile.avatar_url}
@@ -90,70 +91,77 @@ export default async function Home() {
           </div>
         </section>)}
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-          <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">
-            Meus Projetos <span className="text-blue-500">(Next.js + Go)</span>
-          </h1>
+        {/* SEÇÃO DE PROJETOS */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <h1 className="text-4xl font-bold mb-12 text-gray-900 dark:text-white">
+              Meus Projetos <span className="text-blue-500">(Next.js + Go)</span>
+            </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-                <div
-                    key={project.id}
-                    className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden border border-gray-200 dark:border-gray-700"
-                >
-                  <Link href={`/projects/${project.slug}`} className="block">
-                    <div className="relative h-48 w-full bg-gray-200">
-                      <img
-                          src={project.thumbnail_url}
-                          alt={project.title}
-                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </Link>
-
-                  <div className="p-6">
-                    <Link href={`/projects/${project.slug}`}>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                        {project.title}
-                      </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.map((project: Project) => (
+                  <div
+                      key={project.id}
+                      className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col"
+                  >
+                    <Link href={`/projects/${project.slug}`} className="block">
+                      <div className="relative h-48 w-full bg-gray-200">
+                        <img
+                            src={project.thumbnail_url}
+                            alt={project.title}
+                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
                     </Link>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-4">
-                      {project.short_description}
-                    </p>
 
-                    <div className="flex flex-wrap gap-2">
-                      {project.skills?.map((skill) => (
-                          <span
-                              key={skill.id}
-                              className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full"
-                          >
-                      {skill.name}
-                    </span>
-                      ))}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <Link href={`/projects/${project.slug}`}>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                          {project.title}
+                        </h3>
+                      </Link>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-4 flex-1">
+                        {project.short_description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {project.skills?.map((skill: Skill) => (
+                            <span
+                                key={skill.id}
+                                className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full"
+                            >
+                        {skill.name}
+                      </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-            ))}
+              ))}
+            </div>
+
+            {projects.length === 0 && (
+                <p className="text-gray-500 mt-10">Nenhum projeto encontrado.</p>
+            )}
           </div>
+        </section>
 
-          {projects.length === 0 && (
-              <p className="text-gray-500 mt-10">Nenhum projeto encontrado.</p>
-          )}
+        {/* SEÇÃO DA TECH STACK - O componente SkillsSection deve ter um fundo bg-white dark:bg-gray-800 na sua raiz para destacar dessa área */}
+        <SkillsSection categories={categories} />
 
-          <SkillsSection categories={categories} />
-
-          <section className="mt-24 mb-12">
+        {/* SEÇÃO DA JORNADA */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
             <h2 className="text-3xl font-bold mb-12 text-gray-900 dark:text-white">
               Minha Jornada
             </h2>
             <ExperienceTimeline experiences={experiences} />
-          </section>
-        </div>
+          </div>
+        </section>
 
-        <section className="py-20 bg-gray-50 dark:bg-gray-900" id="contact">
+        {/* SEÇÃO DE CONTATO */}
+        <section className="py-20 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-800" id="contact">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
                   Interessado no meu trabalho?
@@ -178,12 +186,12 @@ export default async function Home() {
               </div>
 
               <ContactForm />
-
             </div>
           </div>
         </section>
 
-        <footer className="py-8 text-center text-gray-500 text-sm">
+        {/* FOOTER */}
+        <footer className="py-8 bg-gray-50 dark:bg-gray-900 text-center text-gray-500 text-sm">
           <p>© 2026 Ciro Oliveira. Todos os direitos reservados.</p>
           <p className="mt-2">
             Curioso sobre a stack? <Link href="/architecture" className="text-blue-600 hover:underline">Veja como este site foi feito.</Link>

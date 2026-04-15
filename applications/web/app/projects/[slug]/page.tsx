@@ -1,5 +1,5 @@
 import { fetchAPI } from '@/lib/api';
-import { Project } from '@/types';
+import { Project, Skill } from '@/types';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -52,7 +52,7 @@ export default async function ProjectDetails({ params }: PageProps) {
                                 </h1>
 
                                 <div className="flex flex-wrap gap-2">
-                                    {project.skills?.map((skill) => (
+                                    {project.skills?.map((skill: Skill) => (
                                         <span
                                             key={skill.id}
                                             className="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full"
@@ -91,9 +91,13 @@ export default async function ProjectDetails({ params }: PageProps) {
                         <hr className="border-gray-200 dark:border-gray-700 my-8" />
 
                         <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                            <p className="whitespace-pre-line leading-relaxed">
-                                {project.content || project.short_description}
-                            </p>
+                            {project.content ? (
+                                <div dangerouslySetInnerHTML={{ __html: project.content }} />
+                            ) : (
+                                <p className="whitespace-pre-line leading-relaxed">
+                                    {project.short_description}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </article>

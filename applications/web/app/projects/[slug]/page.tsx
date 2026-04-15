@@ -2,11 +2,50 @@ import { fetchAPI } from '@/lib/api';
 import { Project, Skill } from '@/types';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import {Metadata} from "next";
 
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const siteUrl = process.env.SITE_URL || 'http://localhost:3000';
+
+    try {
+        const project = await fetchAPI<Project>(`/projects/${slug}`);
+
+        return {
+            title: `${project.title} | Portfolio Ciro Oliveira`,
+            description: project.short_description,
+            openGraph: {
+                title: project.title,
+                description: project.short_description,
+                url: `${siteUrl}/projects/${slug}`,
+                images: [
+                    {
+                        url: project.thumbnail_url,
+                        width: 1200,
+                        height: 630,
+                        alt: project.title,
+                    },
+                ],
+                type: 'website',
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: project.title,
+                description: project.short_description,
+                images: [project.thumbnail_url],
+            },
+        };
+    } catch (e) {
+        return {
+            title: 'Projeto não encontrado',
+        };
+    }
 }
 
 export default async function ProjectDetails({ params }: PageProps) {

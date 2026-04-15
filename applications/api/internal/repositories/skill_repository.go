@@ -6,14 +6,14 @@ import (
 )
 
 type SkillRepository interface {
-	GetCategoriesWithSkills() ([]models.Category, error)
+	GetAllWithSkills() ([]models.Category, error)
 }
 
 type GormSkillRepository struct {
 	db *gorm.DB
 }
 
-func NewGormSkillRepository(db *gorm.DB) GormSkillRepository {
+func NewGormSkillRepository(db *gorm.DB) *GormSkillRepository {
 	return &GormSkillRepository{db: db}
 }
 

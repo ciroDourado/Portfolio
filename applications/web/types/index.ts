@@ -1,6 +1,15 @@
 export interface Skill {
     id: string;
     name: string;
+    icon_url?: string;
+    proficiency_level?: number;
+}
+
+export interface SkillCategory {
+    id: string;
+    name: string;
+    slug: string;
+    skills: Skill[];
 }
 
 export interface Project {

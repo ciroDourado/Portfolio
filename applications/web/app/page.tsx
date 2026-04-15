@@ -1,7 +1,8 @@
 import { fetchAPI } from '@/lib/api';
-import {Experience, Profile, Project} from '@/types';
+import {Experience, Profile, Project, SkillCategory} from '@/types';
 import Link from 'next/link';
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
+import SkillsSection from "@/app/components/SkillsSection";
 import ContactForm from '@/components/ContactForm';
 
 export const dynamic = 'force-dynamic';
@@ -31,6 +32,13 @@ export default async function Home() {
     profile = await fetchAPI<Profile>('/profile');
   } catch (error) {
     console.error("Falha ao carregar perfil:", error);
+  }
+
+  let categories: SkillCategory[] = [];
+  try {
+    categories = await fetchAPI<SkillCategory[]>('/skills');
+  } catch (error) {
+    console.error("Falha ao carregar habilidades:", error);
   }
 
   return (
@@ -131,6 +139,8 @@ export default async function Home() {
           {projects.length === 0 && (
               <p className="text-gray-500 mt-10">Nenhum projeto encontrado.</p>
           )}
+
+          <SkillsSection categories={categories} />
 
           <section className="mt-24 mb-12">
             <h2 className="text-3xl font-bold mb-12 text-gray-900 dark:text-white">

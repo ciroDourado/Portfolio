@@ -4,8 +4,9 @@ namespace App\Filament\Resources\Projects\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -27,6 +28,11 @@ class ProjectForm
                     ->url(),
                 TextInput::make('live_url')
                     ->url(),
+                Select::make('skills')
+                    ->relationship('skills', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
                 FileUpload::make('thumbnail_url')
                     ->image()
                     ->directory('projects')

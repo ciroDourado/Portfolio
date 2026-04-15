@@ -24,6 +24,10 @@ class ProjectsTable
                     ->searchable(),
                 TextColumn::make('short_description')
                     ->searchable(),
+                TextColumn::make('skills.name')
+                    ->badge()
+                    ->label('Skills')
+                    ->searchable(),
                 TextColumn::make('repository_url')
                     ->searchable(),
                 TextColumn::make('live_url')

@@ -47,6 +47,8 @@ func main() {
 	profileRepo := repositories.NewGormProfileRepository(db)
 	profileHandler := handlers.NewProfileHandler(profileRepo, cfg.StorageURL)
 	contactHandler := handlers.NewContactHandler(asynqClient)
+	skillRepo := repositories.NewGormSkillRepository(db)
+	skillHandler := handlers.NewSkillHandler(skillRepo)
 
 	r := chi.NewRouter()
 
@@ -68,6 +70,7 @@ func main() {
     r.Route("/v1", func(r chi.Router) {
         r.Get("/projects", projectHandler.GetAll)
         r.Get("/projects/{slug}", projectHandler.GetBySlug)
+        r.Get("/skills", skillHandler.GetAll)
         r.Get("/experiences", experienceHandler.GetAll)
         r.Get("/profile", profileHandler.GetProfile)
 

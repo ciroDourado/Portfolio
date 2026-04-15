@@ -21,6 +21,10 @@ class ProjectInfolist
                 TextEntry::make('content')
                     ->placeholder('-')
                     ->columnSpanFull(),
+                TextEntry::make('skills.name')
+                    ->label('Skills Relacionadas')
+                    ->badge()
+                    ->placeholder('Nenhuma skill vinculada'),
                 TextEntry::make('repository_url')
                     ->placeholder('-'),
                 TextEntry::make('live_url')

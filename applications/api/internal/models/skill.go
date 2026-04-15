@@ -1,15 +1,15 @@
 package models
 
 type Skill struct {
-	ID              uint   `gorm:"primaryKey" json:"-"`
-	UUID            string `json:"id"`
-	SkillCategoryID uint   `json:"-"`
-    Category        *Category `gorm:"foreignKey:SkillCategoryID" json:"category,omitempty"`
-	Name             string `json:"name"`
-	Slug             string `json:"slug"`
-	IconURL          string `json:"icon_url"`
-	ProficiencyLevel int    `json:"proficiency_level"`
-	IsHighlight      bool   `json:"is_highlight"`
+	ID               uint      `gorm:"primaryKey" json:"-"`
+	UUID             string    `json:"id"`
+	SkillCategoryID  uint      `json:"-"`
+    Category         *Category `gorm:"foreignKey:SkillCategoryID" json:"category,omitempty"`
+	Name             string    `json:"name"`
+	Slug             string    `json:"slug"`
+	IconURL          string    `json:"icon_url"`
+	ProficiencyLevel int       `json:"proficiency_level"`
+	IsHighlight      bool      `json:"is_highlight"`
 }
 
 func (Skill) TableName() string {
@@ -21,6 +21,7 @@ type Category struct {
     Name  string `json:"name"`
     Slug  string `json:"slug"`
     Order int    `json:"order"`
+    Skills []Skill `gorm:"foreignKey:SkillCategoryID" json:"skills,omitempty"`
 }
 
 func (Category) TableName() string {

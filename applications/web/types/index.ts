@@ -45,3 +45,11 @@ export interface Profile {
     linkedin_url: string;
     cv_url: string;
 }
+
+export interface SoftSkill {
+    id: string;
+    title: string;
+    icon: string;
+    description: string;
+    order: number;
+}

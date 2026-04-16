@@ -1,9 +1,10 @@
 import { fetchAPI } from '@/lib/api';
-import {Experience, Profile, Project, Skill, SkillCategory} from '@/types';
+import {Experience, Profile, Project, Skill, SkillCategory, SoftSkill} from '@/types';
 import Link from 'next/link';
 import ExperienceTimeline from "@/app/components/ExperienceTimeline";
 import SkillsSection from "@/app/components/SkillsSection";
 import ContactForm from '@/components/ContactForm';
+import BeyondCodeSection from "@/app/components/BeyondCodeSection";
 
 export const dynamic = 'force-dynamic';
 
@@ -39,6 +40,13 @@ export default async function Home() {
     categories = await fetchAPI<SkillCategory[]>('/skills');
   } catch (error) {
     console.error("Falha ao carregar habilidades:", error);
+  }
+
+  let softSkills: SoftSkill[] = [];
+  try {
+    softSkills = await fetchAPI<SoftSkill[]>('/soft-skills');
+  } catch (error) {
+    console.error("Falha ao carregar soft skills:", error);
   }
 
   return (
@@ -145,7 +153,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* SEÇÃO DA TECH STACK - O componente SkillsSection deve ter um fundo bg-white dark:bg-gray-800 na sua raiz para destacar dessa área */}
+        {/* SEÇÃO DA TECH STACK */}
         <SkillsSection categories={categories} />
 
         {/* SEÇÃO DA JORNADA */}
@@ -157,6 +165,9 @@ export default async function Home() {
             <ExperienceTimeline experiences={experiences} />
           </div>
         </section>
+
+        {/* SEÇÃO DAS SOFT SKILLS */}
+        <BeyondCodeSection skills={softSkills} />
 
         {/* SEÇÃO DE CONTATO */}
         <section className="py-20 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-800" id="contact">

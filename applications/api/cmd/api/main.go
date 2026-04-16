@@ -49,6 +49,8 @@ func main() {
 	contactHandler := handlers.NewContactHandler(asynqClient)
 	skillRepo := repositories.NewGormSkillRepository(db)
 	skillHandler := handlers.NewSkillHandler(skillRepo)
+	softSkillRepo := repositories.NewGormSoftSkillRepository(db)
+	softSkillHandler := handlers.NewSoftSkillHandler(softSkillRepo)
 
 	r := chi.NewRouter()
 
@@ -73,6 +75,7 @@ func main() {
         r.Get("/skills", skillHandler.GetAll)
         r.Get("/experiences", experienceHandler.GetAll)
         r.Get("/profile", profileHandler.GetProfile)
+        r.Get("/soft-skills", softSkillHandler.GetAll)
 
         r.Group(func(r chi.Router) {
             r.Use(middlewares.NewRateLimiter(redisClient, "3-H"))

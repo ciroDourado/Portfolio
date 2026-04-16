@@ -22,7 +22,8 @@ export default function BeyondCodeSection({ skills }: BeyondCodeProps) {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {skills.map((skill: SoftSkill) => {
-                        const IconComponent = Icons[skill.icon] || Icons.FaQuestion;
+                        const iconName = skill.icon as keyof typeof Icons;
+                        const IconComponent = Icons[iconName] || Icons.FaQuestion;
 
                         return (
                             <div key={skill.id} className="bg-gray-50 dark:bg-gray-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-700 hover:-translate-y-1 transition-all duration-300">

@@ -31,6 +31,7 @@ export interface Experience {
     company_name: string;
     role: string;
     description: string;
+    results?: string[];
     start_date: string;
     end_date: string | null;
 }

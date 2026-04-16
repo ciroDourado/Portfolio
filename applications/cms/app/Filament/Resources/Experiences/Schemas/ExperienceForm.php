@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Experiences\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -20,6 +21,13 @@ class ExperienceForm
                 TextInput::make('role')
                     ->required(),
                 RichEditor::make('description')
+                    ->columnSpanFull(),
+                Repeater::make('results')
+                    ->label('Main Results and Achievements')
+                    ->simple(
+                        TextInput::make('result')->required()
+                    )
+                    ->addActionLabel('Add Result')
                     ->columnSpanFull(),
                 DatePicker::make('start_date')
                     ->required(),

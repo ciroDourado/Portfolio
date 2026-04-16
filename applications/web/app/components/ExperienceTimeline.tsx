@@ -26,6 +26,17 @@ export default function ExperienceTimeline({ experiences }: { experiences: Exper
                         className="prose prose-sm dark:prose-invert text-gray-600 dark:text-gray-300 max-w-none mt-2"
                         dangerouslySetInnerHTML={{ __html: exp.description }}
                     />
+
+                    {exp.results && exp.results.length > 0 && (
+                        <div className="mt-4">
+                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Principais Resultados:</h4>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                {exp.results.map((result: string, index: number) => (
+                                    <li key={`result_${index}`}>{result}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             ))}
         </div>

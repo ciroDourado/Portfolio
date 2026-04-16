@@ -15,6 +15,7 @@ class Experience extends Model
         'company_name',
         'role',
         'description',
+        'results',
         'start_date',
         'end_date',
         'is_current'
@@ -24,6 +25,7 @@ class Experience extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'is_current' => 'boolean',
+        'results' => 'array',
     ];
 
     public function uniqueIds(): array

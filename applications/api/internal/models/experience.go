@@ -8,6 +8,7 @@ type Experience struct {
 	CompanyName string     `json:"company_name"`
 	Role        string     `json:"role"`
 	Description *string    `json:"description"`
+	Results     []string   `gorm:"serializer:json" json:"results"`
 	StartDate   time.Time  `json:"start_date"`
 	EndDate     *time.Time `json:"end_date"`
 	IsCurrent   bool       `json:"is_current"`

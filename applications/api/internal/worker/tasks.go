@@ -13,9 +13,9 @@ const (
 )
 
 type ContactPayload struct {
-	Name    string `json:"name"`
-	Email   string `json:"email"`
-	Message string `json:"message"`
+    Name    string `json:"name" validate:"required,max=100"`
+	Email   string `json:"email" validate:"required,email,max=100"`
+	Message string `json:"message" validate:"required,max=1000"`
 }
 
 func NewContactTask(name, email, message string) (*asynq.Task, error) {

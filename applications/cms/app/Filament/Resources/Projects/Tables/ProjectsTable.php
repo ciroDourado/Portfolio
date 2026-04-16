@@ -51,6 +51,7 @@ class ProjectsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('started_at')
             ->filters([
                 //
             ])

@@ -8,7 +8,6 @@ export const metadata = {
 export default function ArchitecturePage() {
     return (
         <main className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
-
             <section className="bg-white dark:bg-gray-800 py-20 border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
@@ -22,7 +21,6 @@ export default function ArchitecturePage() {
             </section>
 
             <div className="max-w-5xl mx-auto px-4 mt-16 space-y-24">
-
                 <section>
                     <div className="flex items-center gap-4 mb-8">
                         <div className="h-10 w-1 bg-blue-600 rounded-full"></div>
@@ -31,13 +29,13 @@ export default function ArchitecturePage() {
 
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <img
-                            src="/architecture-diagram.svg"
-                            alt="Diagrama de Arquitetura do Sistema"
-                            className="w-full h-auto bg-white p-4 rounded-lg"
+                            src="/architecture-diagram.png"
+                            alt="Diagrama de Arquitetura do Sistema - Modelo C4 Nível 2"
+                            className="w-full h-auto bg-white p-6 rounded-xl border border-gray-100"
                         />
                     </div>
                     <p className="mt-4 text-gray-500 text-sm text-center">
-                        Diagrama gerado via Mermaid.js representando o fluxo de dados em produção.
+                        Diagrama de Containers (Nível 2 do Modelo C4) representando o fluxo de rede e componentes do sistema.
                     </p>
                 </section>
 
@@ -66,7 +64,6 @@ export default function ArchitecturePage() {
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-10 text-center">Tech Stack</h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
                         <StackCard title="Frontend" color="border-blue-500">
                             <TechItem name="Next.js 14" desc="App Router & SSR" />
                             <TechItem name="Tailwind CSS" desc="Styling & Typography" />
@@ -91,7 +88,6 @@ export default function ArchitecturePage() {
                             <TechItem name="Caddy" desc="Reverse Proxy & SSL" />
                             <TechItem name="GitHub Actions" desc="CI/CD Pipeline" />
                         </StackCard>
-
                     </div>
                 </section>
 
@@ -104,7 +100,6 @@ export default function ArchitecturePage() {
                         Ver Código Fonte no GitHub
                     </Link>
                 </section>
-
             </div>
         </main>
     );

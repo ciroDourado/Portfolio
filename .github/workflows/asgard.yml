@@ -1,7 +1,6 @@
 name: Asgard
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-api:

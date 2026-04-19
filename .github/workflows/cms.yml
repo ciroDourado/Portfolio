@@ -1,0 +1,35 @@
+name: CMS
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'applications/cms/**'
+      - '.github/workflows/cms.yml'
+
+jobs:
+  build-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        working-directory: ./applications/cms
+        run: composer install --no-dev --optimize-autoloader --prefer-dist
+
+      - name: Deploy and Optimize
+        run: |
+          sudo chown -R ${{ secrets.SSH_USERNAME }}:${{ secrets.SSH_USERNAME }} ${{ secrets.REMOTE_PATH }}/cms/storage ${{ secrets.REMOTE_PATH }}/cms/bootstrap/cache
+          
+          rsync -a --exclude='storage' --exclude='.env' applications/cms/ ${{ secrets.REMOTE_PATH }}/cms/
+          
+          cd ${{ secrets.REMOTE_PATH }}/cms
+          
+          /usr/bin/php artisan migrate --force
+          /usr/bin/php artisan optimize:clear
+          /usr/bin/php artisan optimize
+          
+          sudo chown -R ${{ secrets.REMOTE_WEBSERVER }}:${{ secrets.REMOTE_WEBSERVER }} storage bootstrap/cache
+          sudo chmod -R 775 storage bootstrap/cache
+

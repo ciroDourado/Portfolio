@@ -1,15 +1,15 @@
-name: SPA
+name: Web
 on:
   push:
     branches:
       - main
     paths:
       - 'applications/web/**'
+      - '.github/workflows/web.yml'
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: self-hosted
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,5 +36,5 @@ jobs:
       - name: Deploy and Restart
         run: |
           rm -rf ${{ secrets.REMOTE_PATH }}/web/.next
-          cp -r applications/web/.next/standalone ${{ secrets.REMOTE_PATH }}/web/.next
+          cp -a applications/web/.next/standalone/. ${{ secrets.REMOTE_PATH }}/web/
           /usr/local/bin/pm2 restart PortfolioWeb

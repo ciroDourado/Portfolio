@@ -1,0 +1,40 @@
+name: SPA
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'applications/web/**'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: applications/web/package-lock.json
+
+      - name: Install Dependencies and Build
+        working-directory: ./applications/web
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          API_INTERNAL_URL: ${{ secrets.API_INTERNAL_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
+        run: |
+          npm ci
+          npm run build
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
+
+      - name: Deploy and Restart
+        run: |
+          rm -rf ${{ secrets.REMOTE_PATH }}/web/.next
+          cp -r applications/web/.next/standalone ${{ secrets.REMOTE_PATH }}/web/.next
+          /usr/local/bin/pm2 restart PortfolioWeb

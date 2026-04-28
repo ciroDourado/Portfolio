@@ -79,7 +79,7 @@ export default async function Home() {
                 {profile.cv_url && (
                     <a href={profile.cv_url} target="_blank"
                        className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition">
-                      Download CV
+                      Baixar Currículo
                     </a>
                 )}
                 {profile.github_url && (

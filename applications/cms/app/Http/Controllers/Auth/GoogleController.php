@@ -19,7 +19,9 @@ class GoogleController extends Controller
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $user = User::where('email', $googleUser->getEmail())->first();
+        $user = User::query()
+            ->where('email', $googleUser->getEmail())
+            ->first();
 
         if (!$user) {
             return redirect(Filament::getPanel('admin')->getLoginUrl())

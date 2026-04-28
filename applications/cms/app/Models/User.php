@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property ?string $github_id
+ * @property ?string $google_id
+ */
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -25,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'google_id',
+        'github_id',
     ];
 
     /**
